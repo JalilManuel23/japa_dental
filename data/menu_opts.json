@@ -1,0 +1,25 @@
+{
+    "nombreApp" : "Japa Dental",
+    "rutas" : [
+        {
+            "ruta" : "crear_cita",
+            "icon" : "add",
+            "texto": "Crear Cita"
+        },
+        {
+            "ruta" : "editar_cita",
+            "icon" : "autorenew",
+            "texto": "Editar Cita"
+        },
+        {
+            "ruta" : "eliminar_cita",
+            "icon" : "delete",
+            "texto": "Eliminar Cita"
+        },
+        {
+            "ruta" : "informacion",
+            "icon" : "info",
+            "texto": "Información"
+        }
+    ]
+}
