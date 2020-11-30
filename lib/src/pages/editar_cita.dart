@@ -1,121 +1,199 @@
+import 'package:examen/src/pages/gradient_appbar.dart';
 import 'package:flutter/material.dart';
 
-class EditarCita extends StatelessWidget {
+class EditarCita extends StatefulWidget {
+
+  @override
+  _EditarCitaState createState() => _EditarCitaState();
+}
+
+class _EditarCitaState extends State<EditarCita> {
+  String _fecha = '';
+
+  TextEditingController _inputFieldDateControler = new TextEditingController(); 
+  List<String> _citas = ['Número de Cita', '1', '2', '3', '4'];
+
+  String _opcionSeleccionada = 'Número de Cita';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Editar Cita'),
-        leading: Icon(Icons.autorenew),
-      ),
-      body: ListView(
-        children: [
-          ListTile(
-              title: Center(
-                child:Text('No. de cita:',
-                style: TextStyle(
-                  fontSize: 20
-                ),
-              ),
-            ),
-          ),
-          Container(
-            child: Center(
-              // ignore: missing_required_param
-              child: DropdownButton(
-                items: [
-                  DropdownMenuItem(child: Text('1')),
-                  DropdownMenuItem(child: Text('2')),
-                  DropdownMenuItem(child: Text('3')),
-                  DropdownMenuItem(child: Text('4')),
-                  DropdownMenuItem(child: Text('5')),
-                  DropdownMenuItem(child: Text('6')),
-                ],
-                onChanged: (value){},
-              ),
-            ),
-          ),
-          ListTile(
-            title: Center( 
-              child: Text('Nombre(s):',
-                style: TextStyle(
-                  fontSize: 20
-                ),
-              ),
-            ),
-          ),
-          TextField(
-            decoration: InputDecoration(
-              labelText: '   Nombre(s)'
-            ),
-          ),
-          ListTile(
-            title: Center( 
-              child: Text('Apellido materno:',
-                style: TextStyle(
-                  fontSize: 20
-                ),
-              ),
-            ),
-          ),
-          TextField(
-            decoration: InputDecoration(
-              labelText: '   Apellido materno',
-            ),
-          ),
-          ListTile(
-            title: Center( 
-              child: Text('Apellido paterno:',
-                style: TextStyle(
-                  fontSize: 20
-                ),
-              ),
-            ),
-          ),
-          TextField(
-            decoration: InputDecoration(
-              labelText: '   Apellido paterno'
-            ),
-          ),
-          ListTile(
-            title: Center( 
-              child: Text('Fecha:',
-                style: TextStyle(
-                  fontSize: 20
-                ),
-              ),
-            ),
-          ),
+      body: new Column(
+        children: <Widget>[
+          new GradientAppBar("Japa Dental"),
+          input(_crearDropdown()),
+          input(_crearInput()),
+          input(_crearInputTel()),
+          input(_crearFecha(context)),
           RaisedButton(
-            onPressed: (){
-              showDatePicker(
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime(2000),
-                lastDate: DateTime(2025),
-                initialEntryMode: DatePickerEntryMode.input
-              );
-            },
-            child: Text('Seleccionar'),
-          ),
-          RaisedButton(
-            onPressed: (){},
-            child: Text('EDITAR CITA',
-              style: TextStyle(
-                color: Color(0xFFE1F5FE),
-              ),
+            onPressed: () {},
+            textColor: Colors.white,
+            padding: const EdgeInsets.all(0.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
             ),
-            color: Color(0xFF0277BD),
-          )
+            child: Container(
+              decoration: const BoxDecoration(    
+                gradient: LinearGradient(
+                  colors: <Color>[
+                    Color(0xFF0D47A1),
+                    Color(0xFF1976D2),
+                    Color(0xFF42A5F5),
+                  ],
+                ),
+              ),
+              padding: const EdgeInsets.all(10.0),
+              child:
+                  const Text('EDITAR CITA', style: TextStyle(fontSize: 20)),
+            ),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-      child: Icon(Icons.arrow_back),
-      onPressed: () {
-        Navigator.pop(context);
+        child: Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+      bottomNavigationBar: _bottomNavigationBar(context),
+    );
+  }
+
+  Widget _crearInput() {
+    return TextField(
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.all(20.0),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20.0)
+        ),
+        hintText: 'Nombre del paciente',
+        labelText: 'Nombre',
+        suffixIcon: Icon(Icons.accessibility),
+        icon: Icon(Icons.account_circle),
+      )
+    );
+  }
+
+  Widget _crearInputTel() {
+    return TextField(
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.all(20.0),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20.0)
+        ),
+        hintText: 'Número de telefono',
+        labelText: 'Telefono',
+        suffixIcon: Icon(Icons.contact_phone),
+        icon: Icon(Icons.phone),
+      )
+    );
+  }
+
+  Widget input(Widget cajaTexto) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+      child: cajaTexto,
+    );
+  }
+
+ Widget _crearFecha(BuildContext context) {
+    return TextField(
+      enableInteractiveSelection: false,
+      controller: _inputFieldDateControler,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20.0)
+        ),
+        hintText: 'Selecciona una Fecha',
+        labelText: 'Selecciona una Fecha',
+        suffixIcon: Icon(Icons.perm_contact_calendar),
+        icon: Icon(Icons.calendar_today),
+      ),
+      onTap: () {
+        FocusScope.of(context).requestFocus(new FocusNode());
+        _selectDate(context);
       },
-    ),
+    );
+  }
+
+  void _selectDate(BuildContext context) async {
+    DateTime picked = await showDatePicker(
+      context: context, 
+      initialDate: new DateTime.now(), 
+      firstDate: new DateTime(2018), 
+      lastDate: new DateTime(2025),
+      locale: Locale('es', 'ES')
+    );
+
+    if(picked != null) {
+      setState(() {
+        _fecha = picked.toString();
+        _inputFieldDateControler.text = _fecha;
+      });
+    }
+    
+  }
+
+  List <DropdownMenuItem<String>> getOpcionesDropdown() {
+    List<DropdownMenuItem<String>> lista = new List();
+
+    _citas.forEach((poder) {
+      lista.add(DropdownMenuItem(
+        child: Text(poder),
+        value: poder,
+      ));
+    });
+
+    return lista;
+  }
+
+  Widget _crearDropdown() {
+    return Row(
+      children: [
+        Icon(Icons.format_list_numbered_rtl),
+        SizedBox(width: 30.0,),
+        Expanded(
+            child: DropdownButton(
+            value: _opcionSeleccionada,
+            items: getOpcionesDropdown(),
+            onChanged: (opt) {
+              setState(() {
+                _opcionSeleccionada = opt;
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _bottomNavigationBar(BuildContext context) {
+    return new Theme(
+      data: Theme.of(context).copyWith(
+        canvasColor: Colors.blue[600],
+        primaryColor: Colors.grey[500],
+        textTheme: Theme.of(context).textTheme.copyWith(
+          caption: TextStyle(color: Color.fromRGBO(237, 236, 236, 1.0))
+        )
+      ),
+      child: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.date_range, size: 30.0),
+            title: Container(),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people, size: 30.0),
+            title: Container(),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings, size: 30.0),
+            title: Container(),
+          ),
+        ],
+      ),
     );
   }
 }

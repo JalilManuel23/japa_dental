@@ -1,3 +1,4 @@
+import 'package:examen/src/pages/gradient_appbar.dart';
 import 'package:flutter/material.dart';
 
 
@@ -5,13 +6,9 @@ class Informacion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Información'),
-        leading: Icon(Icons.info),
-      ),
-      body: ListView(
-        padding: EdgeInsets.all(20),
+      body: new ListView(
         children: [
+          GradientAppBar("Japa Dental"),
           Card(
             child: Column(children: [
               FadeInImage(
@@ -45,7 +42,36 @@ class Informacion extends StatelessWidget {
         onPressed: () {
           Navigator.pop(context);
         },
-      )
+      ),
+      bottomNavigationBar: _bottomNavigationBar(context),
+    );
+  }
+
+    Widget _bottomNavigationBar(BuildContext context) {
+    return new Theme(
+      data: Theme.of(context).copyWith(
+        canvasColor: Colors.blue[600],
+        primaryColor: Colors.grey[500],
+        textTheme: Theme.of(context).textTheme.copyWith(
+          caption: TextStyle(color: Color.fromRGBO(237, 236, 236, 1.0))
+        )
+      ),
+      child: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.date_range, size: 30.0),
+            title: Container(),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people, size: 30.0),
+            title: Container(),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings, size: 30.0),
+            title: Container(),
+          ),
+        ],
+      ),
     );
   }
 }

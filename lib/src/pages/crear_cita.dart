@@ -20,8 +20,37 @@ class _CrearCitaState extends State<CrearCita> {
           input(_crearInput()),
           input(_crearInputTel()),
           input(_crearFecha(context)),
+          RaisedButton(
+            onPressed: () {},
+            textColor: Colors.white,
+            padding: const EdgeInsets.all(0.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            ),
+            child: Container(
+              decoration: const BoxDecoration(    
+                gradient: LinearGradient(
+                  colors: <Color>[
+                    Color(0xFF0D47A1),
+                    Color(0xFF1976D2),
+                    Color(0xFF42A5F5),
+                  ],
+                ),
+              ),
+              padding: const EdgeInsets.all(10.0),
+              child:
+                  const Text('CREAR CITA', style: TextStyle(fontSize: 20)),
+            ),
+          ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+      bottomNavigationBar: _bottomNavigationBar(context),
     );
   }
 
@@ -100,5 +129,33 @@ class _CrearCitaState extends State<CrearCita> {
       });
     }
     
+  }
+
+  Widget _bottomNavigationBar(BuildContext context) {
+    return new Theme(
+      data: Theme.of(context).copyWith(
+        canvasColor: Colors.blue[600],
+        primaryColor: Colors.grey[500],
+        textTheme: Theme.of(context).textTheme.copyWith(
+          caption: TextStyle(color: Color.fromRGBO(237, 236, 236, 1.0))
+        )
+      ),
+      child: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.date_range, size: 30.0),
+            title: Container(),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people, size: 30.0),
+            title: Container(),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings, size: 30.0),
+            title: Container(),
+          ),
+        ],
+      ),
+    );
   }
 }
